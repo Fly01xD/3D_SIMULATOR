@@ -7,3 +7,6 @@ CPoint::CPoint()
 CPoint::CPoint(float _x, float _y, float _z)
     : X(_x), Y(0), Z(_z)
 {}
+
+CPoint::~CPoint()
+{}
