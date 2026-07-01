@@ -37,55 +37,40 @@ CLine *CLine::calculatePoint(CLine* _line)
 
     // SPRAWDZENIE JAKIE SĄ WZGLĘDEM SIEBIE PROSTE
 
-    int checker = 0;    // odliczanie równych stosunków wektorów
-    for(int i = 0; i < 3; i++)
-    {
-        float k, s;
-        if(i < 2)
-        {
-            k = v1[i]/v2[i];
-            s = v1[i+1]/v2[i+1];
-        }
-        else
-        {
-            k = v1[i]/v2[i];
-            s = v1[i-2]/v2[i-2];
-        }
-        if(k == s)
-            checker++;
-    }
-    if(checker < 3) // sprawdzenie czy proste nie są równoległe
+    CVector* checkVector = directionVector.crossProduct(&directionVector, &_line->directionVector);
+    float epsilon = 1e-6;
+    bool areParallel = (std::abs(checkVector->X) < epsilon &&
+        std::abs(checkVector->Y) < epsilon && std::abs(checkVector->Z) < epsilon);
+    delete checkVector;
+
+    if(!areParallel) // jeśli proste nie są równoległe
     {
         CVector p1p2(startPoint, _line->startPoint);
         float W = p1p2.Determinant(directionVector, _line->directionVector, p1p2);
-        if(W != 0)  // sprawdzenie czy przypadkiem proste nie sa skośne
+        if(W != 0)  // jeśli proste są skośne
         {
-            _line->setRelation(skew);
+             _line->setRelation(skew);
             returnedRelation = skew;
-            CLine* returnedLine = new CLine(startPoint, calcEndPoint(_line)); // jescze do dokończenia
+            CLine* returnedLine = new CLine(startPoint, calcEndPoint(_line));
             returnedLine->setRelation(skew);
             return returnedLine;
         }
-        else // jeśli nie są
+        else // jeśli nie są skośne
         {     // jeśli stosunek wektorów nie jest liczbą rzeczywistą (skalar)
             float t, point[3];
             bool exist = true;
-            for(int i = 0; i < 3; i++)
-            {
-                if(v2[i] - v1[i] != 0)
-                {
-                    t = (p1[i] - p2[i])/(v2[i] - v1[i]);
-                    point[i] = p1[i] + v1[i]*t;
-                }
-                else
-                {
-                    if(p1[i] == p2[i])
-                        point[i] = p1[i];
-                    else
-                        exist = false;
-                }
-            }
-            if(exist)
+            CVector p1p2(startPoint, _line->startPoint);
+            CVector* p1p2_x_v2 = p1p2.crossProduct(&p1p2, &_line->directionVector);
+            CVector* v1_x_v2 = directionVector.crossProduct(&directionVector, &_line->directionVector);
+            if(v1_x_v2->modulus() == 0)
+                exist = false;
+
+            // poniżej obliczenie punktu
+            t = p1p2.dotProduct(p1p2_x_v2, v1_x_v2)/(v1_x_v2->modulus() * v1_x_v2->modulus());
+            for(int i =0; i < 3; i++) // przypisanie punktu
+                point[i] = p1[i] + v1[i]*t;
+
+            if(exist) // ostateczne zwrócenie punktu
             {
                 _line->setRelation(intersecting);
                 returnedRelation = intersecting;
@@ -99,12 +84,14 @@ CLine *CLine::calculatePoint(CLine* _line)
     }
     else //jeśli proste są równoległe
     {
-        float parameters[3];
-        for(int i = 0; i< 3; i++)
-        {
-            parameters[i] = (p1[i] - p2[i])/v2[i];
-        }
-        if(parameters[0] == parameters[1] == parameters[2])
+        CVector p1p2(startPoint, _line->startPoint);
+        CVector* checkVector = p1p2.crossProduct(&p1p2, &directionVector);
+        float epsilon = 1e-6;
+        bool areIdentical = (std::abs(checkVector->X) < epsilon
+            && std::abs(checkVector->Y) < epsilon && std::abs(checkVector->Z) < epsilon);
+        delete checkVector;
+
+        if(areIdentical)
         {
             _line->setRelation(identical);
             returnedRelation = identical;
