@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(3D_SIMULATOR main.cpp
     cpoint.h cpoint.cpp
     cline.h cline.cpp
-    cvector.h cvector.cpp)
+    cvector.h cvector.cpp
+    cplane.h cplane.cpp)
 
 include(GNUInstallDirs)
 install(TARGETS 3D_SIMULATOR
