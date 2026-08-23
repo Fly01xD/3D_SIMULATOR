@@ -3,7 +3,7 @@
 
 #include "cvector.h"
 
-class CLine
+class CLine : public CSpaceObject
 {
 public:
     enum axis{ OX, OY, OZ};
@@ -18,7 +18,7 @@ public:
     State mState;
     CLine calculatePoint(CLine* _line);
     void setRelation(relation _r) {returnedRelation = _r;}
-    relation getRelation() {return returnedRelation;}
+    relation getRelation() const {return returnedRelation;}
 private:
     relation returnedRelation;
     CPoint startPoint;

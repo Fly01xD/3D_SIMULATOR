@@ -10,25 +10,25 @@ CVector::CVector()
 CVector::CVector(CPoint _start, CPoint _end)
     : startPoint(_start), endPoint(_end), mState(ok)
 {
-    CPoint::X = endPoint.X - startPoint.X;
-    CPoint::Y = endPoint.Y - startPoint.Y;
-    CPoint::Z = endPoint.Z - startPoint.Z;
+    X = endPoint.X - startPoint.X;
+    Y = endPoint.Y - startPoint.Y;
+    Z = endPoint.Z - startPoint.Z;
 }
 
 CVector::CVector(float _x, float _y, float _z)
-    : CPoint(_x, _y, _z), startPoint(), endPoint(), mState(ok)
+    : X(_x), Y(_y), Z(_z), startPoint(), endPoint(_x, _y, _z), mState(ok)
 {}
 
 CVector::~CVector()
 {}
 
-float CVector::Determinant(CVector _A, CVector _B, CVector _C)
+float CVector::Determinant(CVector _A, CVector _B, CVector _C) const
 {
     return (_A.X*_B.Y*_C.Z + _A.Y*_B.Z*_C.X + _A.Z*_B.X*_C.Y
         - _A.Z*_B.Y*_C.X - _A.X*_B.Z*_C.Y - _A.Y*_B.X*_C.Z);
 }
 
-CVector CVector::crossProduct(CVector *_A, CVector *_B)
+CVector CVector::crossProduct(CVector *_A, CVector *_B) const
 {
     float x = _A->Y*_B->Z - _A->Z*_B->Y;
     float y = _A->Z*_B->X - _A->X*_B->Z;
@@ -37,12 +37,12 @@ CVector CVector::crossProduct(CVector *_A, CVector *_B)
     return v;
 }
 
-float CVector::dotProduct(CVector *_A, CVector *_B)
+float CVector::dotProduct(CVector *_A, CVector *_B) const
 {
     return (_A->X*_B->X + _A->Y*_B->Y + _A->Z*_B->Z);
 }
 
-float CVector::modulus()
+float CVector::modulus() const
 {
     return sqrt(X*X + Y*Y + Z*Z);
 }

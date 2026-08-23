@@ -9,7 +9,12 @@ add_executable(3D_SIMULATOR main.cpp
     cpoint.h cpoint.cpp
     cline.h cline.cpp
     cvector.h cvector.cpp
-    cplane.h cplane.cpp)
+    cplane.h cplane.cpp
+
+    cspaceobject.h cspaceobject.cpp
+    cspace.h cspace.cpp
+    cobjectmanager.h cobjectmanager.cpp
+)
 
 include(GNUInstallDirs)
 install(TARGETS 3D_SIMULATOR

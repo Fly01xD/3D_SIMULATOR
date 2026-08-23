@@ -2,7 +2,7 @@
 #define CPLANE_H
 #include "cvector.h"
 
-class CPlane
+class CPlane : public CSpaceObject
 {
 public:
     CPlane(CVector _normal);

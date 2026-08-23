@@ -1,12 +1,14 @@
 #ifndef CPOINT_H
 #define CPOINT_H
 
+#include "cspaceobject.h"
+
 enum State{
     bad,
     ok
 };
 
-class CPoint
+class CPoint : public CSpaceObject
 {
 public:
     CPoint();
@@ -17,7 +19,7 @@ public:
     friend class CVector;
     friend class CLine;
     friend class CPlane;
-protected:
+private:
     float X;
     float Y;
     float Z;

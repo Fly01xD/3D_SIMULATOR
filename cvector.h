@@ -6,7 +6,7 @@ class CLine;
 
 // można napisać algorytm dodawania wektorów używając operatorów
 
-class CVector : protected CPoint
+class CVector : public CSpaceObject
 {
 public:
     CVector();
@@ -16,13 +16,16 @@ public:
 
     State mState;
     friend class CLine;
-    float Determinant(CVector _A, CVector _B, CVector _C);
-    CVector crossProduct(CVector* _A, CVector* _B);
-    float dotProduct(CVector* _A, CVector* _B);
-    float modulus();
+    float Determinant(CVector _A, CVector _B, CVector _C) const;
+    CVector crossProduct(CVector* _A, CVector* _B) const;
+    float dotProduct(CVector* _A, CVector* _B) const;
+    float modulus() const;
 private:
     CPoint startPoint;
     CPoint endPoint;
+    float X;
+    float Y;
+    float Z;
 };
 
 #endif // CVECTOR_H
