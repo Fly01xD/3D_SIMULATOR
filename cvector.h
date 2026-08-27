@@ -13,6 +13,8 @@ public:
     CVector(CPoint _start, CPoint _end);
     CVector(float _x, float _y, float _z);
     ~CVector();
+    std::unique_ptr<CSpaceObject> clone() const override
+    { return std::make_unique<CVector>(*this); }
 
     State mState;
     friend class CLine;

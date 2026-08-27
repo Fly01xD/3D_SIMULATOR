@@ -14,6 +14,8 @@ public:
     CPoint();
     CPoint(float _x, float _y, float _z);
     ~CPoint();
+    std::unique_ptr<CSpaceObject> clone() const override
+    { return std::make_unique<CPoint>(*this); }
 
     State mState;
     friend class CVector;

@@ -14,6 +14,10 @@ add_executable(3D_SIMULATOR main.cpp
     cspaceobject.h cspaceobject.cpp
     cspace.h cspace.cpp
     cobjectmanager.h cobjectmanager.cpp
+    c3d.h c3d.cpp
+    cconsole.h cconsole.cpp
+    cbuilder.h cbuilder.cpp
+
 )
 
 include(GNUInstallDirs)

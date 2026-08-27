@@ -9,9 +9,10 @@ class CSpaceObject;
 // przestrzeń, w której przechowywane są obiekty matematyczne
 class CSpace
 {
-    std::vector<CSpaceObject> objects;
+    std::vector<std::unique_ptr<CSpaceObject>> objects;
 public:
     CSpace();
+    ~CSpace();
 
     bool addObject(const CSpaceObject& _obj);
     bool removeObject(const CSpaceObject& _obj);

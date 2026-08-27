@@ -14,6 +14,8 @@ public:
     CLine(CPoint _start, CVector _direction);
     CLine(CPoint _start, CPoint _end);
     ~CLine();
+    std::unique_ptr<CSpaceObject> clone() const override
+    { return std::make_unique<CLine>(*this); }
 
     State mState;
     CLine calculatePoint(CLine* _line);

@@ -9,6 +9,8 @@ public:
     CPlane(CLine* _line1, CLine* _line2);
     CPlane(CPoint _point1, CPoint _point2, CPoint _point3);
     ~CPlane();
+    std::unique_ptr<CSpaceObject> clone() const override
+    { return std::make_unique<CPlane>(*this); }
 
     State mState;
 private:

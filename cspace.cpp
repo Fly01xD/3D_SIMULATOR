@@ -3,23 +3,16 @@
 
 CSpace::CSpace() {}
 
+CSpace::~CSpace()
+{}
+
 bool CSpace::addObject(const CSpaceObject& _obj)
 {
-    auto i = 0;
-    for(const CSpaceObject& o : objects)
-    {
-        if(o.getName() != _obj.getName())
-            i++;
-        else
+    for(const auto& o : objects)
+        if(o->getName() == _obj.getName())
             return false;
-    }
-    if(i == objects.size())
-    {
-        objects.push_back(_obj);
-        return true;
-    }
-    else
-        return false;
+    objects.push_back(_obj.clone());
+    return true;
 }
 
 bool CSpace::removeObject(const CSpaceObject &_obj)
@@ -38,12 +31,9 @@ bool CSpace::removeObject(const CSpaceObject &_obj)
 
 CSpaceObject* CSpace::getObjectPointer(const std::string _name)
 {
-    int i = 0;
-    for(CSpaceObject& o : objects)
-    {
-        if(o.getName() == _name)
-            return &o;
-    }
+    for(auto& o : objects)
+        if(o->getName() == _name)
+            return o.get(); // stabilny adres — obiekt jest na stercie, wektor przenosi tylko wskaźniki
     return nullptr;
 }
 
