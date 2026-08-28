@@ -1,6 +1,7 @@
 #ifndef CCONSOLE_H
 #define CCONSOLE_H
 #include <optional>
+#include <vector>
 
 #include "cobjectmanager.h"
 
@@ -16,13 +17,22 @@ enum objectType{
 class CConsole
 {
     C3D* app;
-    alertStatus input;
-    alertStatus output;
+    consoleStatus input;
+    consoleStatus output;
 public:
     CConsole(C3D* _a);
     ~CConsole();
     void getInstruction();
+
+    void changeInput(consoleStatus _i) {input = _i;}
+    void changeOutput(consoleStatus _o) {output = _o;}
+
     void failToCreate();
+    void failToRemove(std::string _name);
+    void removed(std::string _name);
+    void failToFind(std::string _name);
+
+    void remove(std::vector<std::string>& _names);
     void create(objectType _type,
         std::optional<std::string> _name1 = std::nullopt,
         std::optional<std::string> _name2 = std::nullopt,

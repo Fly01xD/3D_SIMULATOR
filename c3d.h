@@ -13,12 +13,13 @@ private:
     CObjectManager manager;
     CConsole console;
     CBuilder builder;
-
 public:
     C3D();
     ~C3D();
     bool Setup();
+    CConsole* setupConsole(consoleStatus _input, consoleStatus _output);
     void create(objectType _type, std::vector<std::string>& _names);
+    void remove(std::vector<std::string>& _names);
 };
 
 #endif // C3D_H

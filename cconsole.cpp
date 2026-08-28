@@ -18,6 +18,29 @@ void CConsole::failToCreate()
         std::cout << "Failed to create an object." << std::endl;
 }
 
+void CConsole::failToRemove(std::string _name)
+{
+    if(output == on)
+        std::cout << "Failed to remove " << _name << "." << std::endl;
+}
+
+void CConsole::removed(std::string _name)
+{
+    if(output == on)
+        std::cout << _name << " sucessfully removed" << std::endl;
+}
+
+void CConsole::failToFind(std::string _name)
+{
+    if(output == on)
+        std::cout << "Failed to find " << _name << "." << std::endl;
+}
+
+void CConsole::remove(std::vector<std::string> &_names)
+{
+    app->remove(_names);
+}
+
 void CConsole::create(objectType _type, std::optional<std::string> _name1, std::optional<std::string> _name2, std::optional<std::string> _name3, std::optional<std::string> _name4)
 {
     std::vector<std::string> names;

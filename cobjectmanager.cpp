@@ -67,3 +67,8 @@ bool CObjectManager::addObject(CSpaceObject &_obj,const std::string *_name)
 CSpaceObject *CObjectManager::searchObject(std::string _name)
 {return space->getObjectPointer(_name);}
 
+bool CObjectManager::removeObject(const CSpaceObject &_obj)
+{
+    return space->removeObject(_obj);
+}
+

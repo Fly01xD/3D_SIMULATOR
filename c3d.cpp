@@ -24,6 +24,13 @@ bool C3D::Setup()
     return true;
 }
 
+CConsole *C3D::setupConsole(consoleStatus _input, consoleStatus _output)
+{
+    console.changeInput(_input);
+    console.changeOutput(_output);
+    return &console;
+}
+
 void C3D::create(objectType _type, std::vector<std::string> &_names)
 { // trzeba napisać co jeśli bool = false
     switch(_type)
@@ -47,6 +54,22 @@ void C3D::create(objectType _type, std::vector<std::string> &_names)
     default:
         console.failToCreate();
         break;
+    }
+}
+
+void C3D::remove(std::vector<std::string> &_names)
+{
+    for(const auto &n : _names)
+    {
+        if(CSpaceObject* ptr = manager.searchObject(n))
+        {
+            if(manager.removeObject(*ptr))
+                console.removed(n);
+            else
+                console.failToRemove(n);
+        }
+        else
+            console.failToFind(n);
     }
 }
 

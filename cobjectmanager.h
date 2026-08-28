@@ -5,7 +5,7 @@
 class CSpace;
 class CSpaceObject;
 
-enum alertStatus{
+enum consoleStatus{
     on,
     off
 };
@@ -14,7 +14,7 @@ class CObjectManager
 {
 private:
     CSpace* space;
-    alertStatus alert;
+    consoleStatus alert;
     unsigned nPlane;
     unsigned nLine;
     unsigned nVector;
@@ -28,6 +28,7 @@ public:
         else alert = on;}
     bool addObject(CSpaceObject &_obj, const std::string *_name);
     CSpaceObject* searchObject(std::string _name);
+    bool removeObject(const CSpaceObject &_obj);
 };
 
 #endif // COBJECTMANAGER_H
