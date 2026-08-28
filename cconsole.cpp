@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-CConsole::CConsole(C3D *_a) : input(on), app(_a)
+CConsole::CConsole(C3D *_a) : input(on), output(on), app(_a)
 {}
 
 CConsole::~CConsole()
