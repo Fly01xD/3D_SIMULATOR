@@ -37,5 +37,13 @@ CSpaceObject* CSpace::getObjectPointer(const std::string _name)
     return nullptr;
 }
 
+CSpaceObject *CSpace::getObjectPointerAt(const size_t _i)
+{
+    if(_i < objects.size()) // iteracja od 0
+        return objects[_i].get();
+    else
+        return nullptr;
+}
+
 const size_t CSpace::size() const
 { return objects.size(); }

@@ -62,3 +62,15 @@ void CConsole::create(objectType _type, std::optional<std::string> _name1, std::
     }
     app->create(_type, names);
 }
+
+void CConsole::list(objectType _type) // trzeba napisać rozkład (numer, typ, nazwa)
+{
+    if(_type == all)
+        app->listAll();
+}
+
+void CConsole::write(std::string _text)
+{
+    if(output == on)
+        std::cout << _text;
+}

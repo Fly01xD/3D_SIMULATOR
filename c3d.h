@@ -20,6 +20,7 @@ public:
     CConsole* setupConsole(consoleStatus _input, consoleStatus _output);
     void create(objectType _type, std::vector<std::string>& _names);
     void remove(std::vector<std::string>& _names);
+    void listAll();
 };
 
 #endif // C3D_H

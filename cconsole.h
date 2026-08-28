@@ -8,6 +8,7 @@
 class C3D;
 
 enum objectType{
+    all,
     plane,
     line,
     vector,
@@ -31,6 +32,7 @@ public:
     void failToRemove(std::string _name);
     void removed(std::string _name);
     void failToFind(std::string _name);
+    void write(std::string _text);
 
     void remove(std::vector<std::string>& _names);
     void create(objectType _type,
@@ -38,6 +40,7 @@ public:
         std::optional<std::string> _name2 = std::nullopt,
         std::optional<std::string> _name3 = std::nullopt,
         std::optional<std::string> _name4 = std::nullopt);
+    void list(objectType _type);
 };
 
 #endif // CCONSOLE_H

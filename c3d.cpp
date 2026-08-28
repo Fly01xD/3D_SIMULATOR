@@ -1,5 +1,6 @@
 #include "c3d.h"
 #include <iostream>
+#include <sstream>
 
 C3D::C3D() : space(), manager(&space), console(this), builder(&manager)
 {
@@ -70,6 +71,23 @@ void C3D::remove(std::vector<std::string> &_names)
         }
         else
             console.failToFind(n);
+    }
+}
+
+void C3D::listAll()
+{
+    std::size_t s = manager.spaceSize();
+    for(size_t i = 0; i < s; ++i)
+    {
+        std::stringstream number;
+        number << i << ".\t";
+        console.write(number.str());
+
+        // można jeszcze napisać typ
+
+        std::stringstream name;
+        name << manager.objectAt(i)->getName() << "\t";
+        console.write(name.str());
     }
 }
 

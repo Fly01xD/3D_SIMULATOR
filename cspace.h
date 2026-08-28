@@ -17,6 +17,7 @@ public:
     bool addObject(const CSpaceObject& _obj);
     bool removeObject(const CSpaceObject& _obj);
     CSpaceObject* getObjectPointer(const std::string _name);
+    CSpaceObject* getObjectPointerAt(const size_t _i);
     const size_t size() const;
 };
 
