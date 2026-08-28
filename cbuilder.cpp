@@ -15,41 +15,38 @@ bool CBuilder::buildPlane(std::vector<std::string> &_names)
     case 4: { // trzy punkty i nazwa
         CPoint a[3] = {CPoint()};
         for(size_t i = 0; i < s - 1; ++i) {
-            if(resolve<CPoint>(_names[i]))
-                a[i] = *resolve<CPoint>(_names[i]);
+            if(CPoint* ptr = resolve<CPoint>(_names[i]))
+                a[i] = *ptr;
             else
                 return false;
         }
         CPlane newObject(a[0], a[1], a[2]);
-        manager->addObject(newObject, &_names[s-1]);
-        return true;
+        return manager->addObject(newObject, &_names[s-1]);
     }
     case 3: { // 1 możliwość: dwie linie z nazwą, 2 możliwość: trzy punkty bez nazwy
         if(resolve<CLine>(_names[0])) // możliwość 1
         {
             CLine a[2] = {CLine(CLine::OX) , CLine(CLine::OX)};
             for(size_t i = 0; i < s - 1; ++i) {
-                if(resolve<CLine>(_names[i]))
-                    a[i] = *resolve<CLine>(_names[i]);
+                if(CLine* ptr = resolve<CLine>(_names[i]))
+                    a[i] = *ptr;
                 else
                     return false;
             }
             CPlane newObject(&a[0], &a[1]);
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
         else // możliwość 2
         {
             CPoint a[3] = {CPoint()};
-            for(size_t i = 0; i < s - 1; ++i) {
-                if(resolve<CPoint>(_names[i]))
-                    a[i] = *resolve<CPoint>(_names[i]);
+            for(size_t i = 0; i < s; ++i) {
+                if(CPoint* ptr = resolve<CPoint>(_names[i]))
+                    a[i] = *ptr;
                 else
                     return false;
             }
             CPlane newObject(a[0], a[1], a[2]);
-            manager->addObject(newObject, nullptr);
-            return true;
+            return manager->addObject(newObject, nullptr);
         }
     }
     case 2: { // 1 możliwość: wektor z nazwą, 2 możliwość: dwie linie bez nazwy
@@ -57,21 +54,19 @@ bool CBuilder::buildPlane(std::vector<std::string> &_names)
         {
             CVector a = *resolve<CVector>(_names[0]);
             CPlane newObject(a);
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
         else // możliwość 2
         {
             CLine a[2] = {CLine(CLine::OX) , CLine(CLine::OX)};
-            for(size_t i = 0; i < s - 1; ++i) {
-                if(resolve<CLine>(_names[i]))
-                    a[i] = *resolve<CLine>(_names[i]);
+            for(size_t i = 0; i < s; ++i) {
+                if(CLine* ptr = resolve<CLine>(_names[i]))
+                    a[i] = *ptr;
                 else
                     return false;
             }
             CPlane newObject(&a[0], &a[1]);
-            manager->addObject(newObject, nullptr);
-            return true;
+            return manager->addObject(newObject, nullptr);
         }
     }
     case 1: { // wektor bez nazwy
@@ -79,8 +74,7 @@ bool CBuilder::buildPlane(std::vector<std::string> &_names)
         {
             CVector a = *resolve<CVector>(_names[0]);
             CPlane newObject(a);
-            manager->addObject(newObject, nullptr);
-            return true;
+            return manager->addObject(newObject, nullptr);
         }
         else
             return false;
@@ -101,53 +95,49 @@ bool CBuilder::buildLine(std::vector<std::string> &_names)
         {
             CVector b = *resolve<CVector>(_names[0]);
             CPoint a = CPoint();
-            if(resolve<CPoint>(_names[1]))
-                a = *resolve<CPoint>(_names[1]);
+            if(CPoint* ptr = resolve<CPoint>(_names[1]))
+                a = *ptr;
             else
                 return false;
             CLine newObject(a, b);
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
         else if(resolve<CVector>(_names[1])) // możliwość 2 ale wektor jest w innym miejscu
         {
             CVector b = *resolve<CVector>(_names[1]);
             CPoint a = CPoint();
-            if(resolve<CPoint>(_names[0]))
-                a = *resolve<CPoint>(_names[0]);
+            if(CPoint* ptr = resolve<CPoint>(_names[0]))
+                a = *ptr;
             else
                 return false;
             CLine newObject(a, b);
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
         else // możliwość 1
         {
             CPoint a[2] = {CPoint(), CPoint()};
             for(size_t i = 0; i < s - 1; ++i) {
-                if(resolve<CPoint>(_names[i]))
-                    a[i] = *resolve<CPoint>(_names[i]);
+                if(CPoint* ptr = resolve<CPoint>(_names[i]))
+                    a[i] = *ptr;
                 else
                     return false;
             }
             CLine newObject(a[0], a[1]);
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
     }
     case 2: { // 1 możliwość: dwa punkty bez nazwy, 2 możliwość: oś i nazwa
         if(resolve<CPoint>(_names[0])) // możliwość 1
         {
             CPoint a[2] = {CPoint(), CPoint()};
-            for(size_t i = 0; i < s - 1; ++i) {
-                if(resolve<CPoint>(_names[i]))
-                    a[i] = *resolve<CPoint>(_names[i]);
+            for(size_t i = 0; i < s; ++i) {
+                if(CPoint* ptr = resolve<CPoint>(_names[i]))
+                    a[i] = *ptr;
                 else
                     return false;
             }
             CLine newObject(a[0], a[1]);
-            manager->addObject(newObject, nullptr);
-            return true;
+            return manager->addObject(newObject, nullptr);
         }
         else // możliwość 2
         {
@@ -160,8 +150,7 @@ bool CBuilder::buildLine(std::vector<std::string> &_names)
                 newObject = CLine(CLine::OZ);
             else
                 return false;
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
     }
     case 1: { // oś bez nazwy
@@ -174,8 +163,7 @@ bool CBuilder::buildLine(std::vector<std::string> &_names)
             newObject = CLine(CLine::OZ);
         else
             return false;
-        manager->addObject(newObject, nullptr);
-        return true;
+        return manager->addObject(newObject, nullptr);
     }
     default:
         return false;
@@ -195,49 +183,43 @@ bool CBuilder::buildVector(std::vector<std::string> &_names)
                 return false;
         }
         CVector newObject(a[0], a[1], a[2]);
-        manager->addObject(newObject, &_names[s-1]);
-        return true;
-        break;
+        return manager->addObject(newObject, &_names[s-1]);
     }
     case 3: { // 1 możliwość: dwa punkty i nazwa, 2 możliwość: trzy liczby bez nazwy
         if(resolve<CPoint>(_names[0])) // możliwość 1
         {
             CPoint a[2] = {CPoint(), CPoint()};
             for(size_t i = 0; i < s - 1; ++i) {
-                if(resolve<CPoint>(_names[i]))
-                    a[i] = *resolve<CPoint>(_names[i]);
+                if(CPoint* ptr = resolve<CPoint>(_names[i]))
+                    a[i] = *ptr;
                 else
                     return false;
             }
             CVector newObject(a[0], a[1]);
-            manager->addObject(newObject, &_names[s-1]);
-            return true;
+            return manager->addObject(newObject, &_names[s-1]);
         }
         else // możliwość 2
         {
             float a[3] = {0};
-            for(size_t i = 0; i < s - 1; ++i) {
+            for(size_t i = 0; i < s; ++i) {
                 std::stringstream ss(_names[i]);
                 if(!(ss >> a[i]))
                     return false;
             }
             CVector newObject(a[0], a[1], a[2]);
-            manager->addObject(newObject, nullptr);
-            return true;
-            break;
+            return manager->addObject(newObject, nullptr);
         }
     }
     case 2: { // dwa punkty bez nazwy
         CPoint a[2] = {CPoint(), CPoint()};
-        for(size_t i = 0; i < s - 1; ++i) {
-            if(resolve<CPoint>(_names[i]))
-                a[i] = *resolve<CPoint>(_names[i]);
+        for(size_t i = 0; i < s; ++i) {
+            if(CPoint* ptr = resolve<CPoint>(_names[i]))
+                a[i] = *ptr;
             else
                 return false;
         }
         CVector newObject(a[0], a[1]);
-        manager->addObject(newObject, nullptr);
-        return true;
+        return manager->addObject(newObject, nullptr);
     }
     default:
         return false;
@@ -257,25 +239,20 @@ bool CBuilder::buildPoint(std::vector<std::string> &_names)
                 return false;
         }
         CPoint newObject(a[0], a[1], a[2]);
-        manager->addObject(newObject, &_names[s-1]);
-        return true;
-        break;
+        return manager->addObject(newObject, &_names[s-1]);
     }
     case 3: { // trzy liczby
         float a[3] = {0};
-        for(size_t i = 0; i < s - 1; ++i) {
+        for(size_t i = 0; i < s; ++i) {
             std::stringstream ss(_names[i]);
             if(!(ss >> a[i]))
                 return false;
         }
         CPoint newObject(a[0], a[1], a[2]);
-        manager->addObject(newObject, nullptr);
-        return true;
-        break;
+        return manager->addObject(newObject, nullptr);
     }
     default:
         return false;
-        break;
     }
 }
 

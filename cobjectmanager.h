@@ -26,7 +26,7 @@ public:
     void alertOFF() {alert = off;}
     void toggleAlert() {if(alert == on) alert = off;
         else alert = on;}
-    void addObject(CSpaceObject &_obj, const std::string *_name);
+    bool addObject(CSpaceObject &_obj, const std::string *_name);
     CSpaceObject* searchObject(std::string _name);
 };
 

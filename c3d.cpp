@@ -31,17 +31,22 @@ void C3D::create(objectType _type, std::vector<std::string> &_names)
     case plane:
         if(!builder.buildPlane(_names))
             console.failToCreate();
+        break;
     case line:
         if(!builder.buildLine(_names))
             console.failToCreate();
+        break;
     case vector:
         if(!builder.buildVector(_names))
             console.failToCreate();
+        break;
     case point:
         if(!builder.buildPoint(_names))
             console.failToCreate();
+        break;
     default:
         console.failToCreate();
+        break;
     }
 }
 

@@ -18,7 +18,7 @@ bool CSpace::addObject(const CSpaceObject& _obj)
 bool CSpace::removeObject(const CSpaceObject &_obj)
 {
     auto it = std::find_if(objects.begin(), objects.end(),
-        [&_obj](const CSpaceObject& o) {return &o == &_obj;});
+        [&_obj](const std::unique_ptr<CSpaceObject>& o) { return o.get() == &_obj; });
 
     if(it == objects.end())
         return false;
