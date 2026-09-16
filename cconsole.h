@@ -4,16 +4,10 @@
 #include <vector>
 
 #include "cobjectmanager.h"
+#include "objectType.h"
 
 class C3D;
-
-enum objectType{
-    all,
-    plane,
-    line,
-    vector,
-    point
-};
+struct SInode;
 
 class CConsole
 {
@@ -23,24 +17,36 @@ class CConsole
 public:
     CConsole(C3D* _a);
     ~CConsole();
-    void getInstruction();
+    void Instruction();
 
     void changeInput(consoleStatus _i) {input = _i;}
     void changeOutput(consoleStatus _o) {output = _o;}
 
     void failToCreate();
     void failToRemove(std::string _name);
-    void removed(std::string _name);
-    void failToFind(std::string _name);
+    void removedSuccesfully(std::string _name);
+    void failToFind();
     void write(std::string _text);
+    void writeInode(SInode _info);
 
     void remove(std::vector<std::string>& _names);
+    void removeAt(size_t _i);
+    void clearSpace();
     void create(objectType _type,
         std::optional<std::string> _name1 = std::nullopt,
         std::optional<std::string> _name2 = std::nullopt,
         std::optional<std::string> _name3 = std::nullopt,
         std::optional<std::string> _name4 = std::nullopt);
     void list(objectType _type);
+    std::optional<std::string> getNameAt(size_t _i);
+    void chooseAt(size_t _i);
+    void choose(std::string _name);
+    SInode chosenMod();
+    SInode chosenInfo();
+    SInode chosenCrossProduct(std::string _name);
+    void unchoose();
+    void save();
+    void save(std::string _name);
 };
 
 #endif // CCONSOLE_H

@@ -21,6 +21,7 @@ public:
     friend class CVector;
     friend class CLine;
     friend class CPlane;
+    friend class CReader;
 private:
     float X;
     float Y;

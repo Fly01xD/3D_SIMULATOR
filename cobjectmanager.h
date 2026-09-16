@@ -26,11 +26,13 @@ public:
     void alertOFF() {alert = off;}
     void toggleAlert() {if(alert == on) alert = off;
         else alert = on;}
+
     bool addObject(CSpaceObject &_obj, const std::string *_name);
     CSpaceObject* searchObject(std::string _name);
     CSpaceObject* objectAt(const size_t _i);
     const size_t spaceSize();
     bool removeObject(const CSpaceObject &_obj);
+    void clearSpace();
 };
 
 #endif // COBJECTMANAGER_H

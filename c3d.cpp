@@ -3,27 +3,10 @@
 #include <sstream>
 
 C3D::C3D() : space(), manager(&space), console(this), builder(&manager)
-{
-    if(Setup())
-    {
-        std::cout << "3D sucessfully initialized." << std::endl;
-        console.getInstruction();
-    }
-    else
-        std::cout << "Failed to initialize 3D." << std::endl;
-}
+{}
 
 C3D::~C3D()
 {}
-
-bool C3D::Setup()
-{
-    space = CSpace();
-    manager = CObjectManager(&space);
-    console = CConsole(this);
-    builder = CBuilder(&manager);
-    return true;
-}
 
 CConsole *C3D::setupConsole(consoleStatus _input, consoleStatus _output)
 {
@@ -65,29 +48,154 @@ void C3D::remove(std::vector<std::string> &_names)
         if(CSpaceObject* ptr = manager.searchObject(n))
         {
             if(manager.removeObject(*ptr))
-                console.removed(n);
+                console.removedSuccesfully(n);
             else
                 console.failToRemove(n);
         }
         else
-            console.failToFind(n);
+            console.failToFind();
     }
 }
 
-void C3D::listAll()
+void C3D::removeAt(size_t _i)
+{
+    std::stringstream name;
+    name << "index " << _i;
+    if(manager.removeObject(*manager.objectAt(_i)))
+        console.removedSuccesfully(name.str());
+    else
+        console.failToRemove(name.str());
+}
+
+void C3D::clearSpace()
+{
+    manager.clearSpace();
+}
+
+std::optional<std::string> C3D::getNameAt(size_t _i)
+{
+    if(CSpaceObject* tmp = manager.objectAt(_i))
+        return tmp->getName();
+    else
+        return std::nullopt;
+}
+
+std::vector<SInode> C3D::list(objectType _type)
 {
     std::size_t s = manager.spaceSize();
+    std::vector<SInode> table;
     for(size_t i = 0; i < s; ++i)
     {
-        std::stringstream number;
-        number << i << ".\t";
-        console.write(number.str());
+        CSpaceObject* tmp = manager.objectAt(i);
+        CReader tmpReader(tmp);
+        SInode info = tmpReader.getInode();
+        if(info.type == _type || _type == all)
+        {
+            std::stringstream number;
+            number << i+1 << ".\t";
+            console.write(number.str());
 
-        // można jeszcze napisać typ
+            std::stringstream name;
+            name << tmp->getName() << "\t";
+            console.write(name.str());
 
-        std::stringstream name;
-        name << manager.objectAt(i)->getName() << "\t";
-        console.write(name.str());
+            table.push_back(info);
+            console.writeInode(info);
+        }
     }
+    return table;
+}
+
+void C3D::choose(std::string _name)
+{
+    if(CSpaceObject* ptr = manager.searchObject(_name))
+        reader.changeObject(ptr);
+}
+
+void C3D::chooseAt(size_t _i)
+{
+    CSpaceObject* tmp = manager.objectAt(_i);
+    if(tmp)
+        reader.changeObject(tmp);
+    else
+        console.failToFind();
+}
+
+SInode C3D::chosenMod()
+{
+    if(reader.readyToRead())
+    {
+        reader.readModulus();
+        console.writeInode(reader.getInode());
+        return reader.getInode();
+    }
+    else
+    {
+        SInode inode;
+        inode.type = unknown;
+        console.writeInode(inode);
+        return inode;
+    }
+}
+
+SInode C3D::chosenInfo()
+{
+    if(reader.readyToRead())
+    {
+        reader.readObject();
+        console.writeInode(reader.getInode());
+        return reader.getInode();
+    }
+    else
+    {
+        SInode inode;
+        inode.type = unknown;
+        console.writeInode(inode);
+        return inode;
+    }
+}
+
+SInode C3D::chosenCrossProduct(std::string _name)
+{
+    if(CSpaceObject* obj = manager.searchObject(_name))
+    {
+        if(reader.readyToRead())
+        {
+            if(reader.calculateCrossProduct(obj))
+            {
+                console.writeInode(reader.getInode());
+                return reader.getInode();
+            }
+            else
+                goto FAILURE;
+        }
+        else
+            goto FAILURE;
+    }
+    else
+    {
+        FAILURE:
+        SInode inode;
+        inode.type = unknown;
+        console.writeInode(inode);
+        return inode;
+    }
+}
+
+void C3D::clearChosen()
+{
+    reader.changeObject(nullptr);
+}
+
+void C3D::saveStash(std::optional<std::string> _name)
+{
+    if(reader.getStash())
+    {
+        if(_name)
+            manager.addObject(*reader.getStash(), &*_name);
+        else
+            manager.addObject(*reader.getStash(), nullptr);
+    }
+    reader.clearStash();
 }
 

@@ -85,3 +85,8 @@ bool CObjectManager::removeObject(const CSpaceObject &_obj)
     return space->removeObject(_obj);
 }
 
+void CObjectManager::clearSpace()
+{
+    space->clear();
+}
+

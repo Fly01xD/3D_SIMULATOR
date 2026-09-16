@@ -47,3 +47,8 @@ CSpaceObject *CSpace::getObjectPointerAt(const size_t _i)
 
 const size_t CSpace::size() const
 { return objects.size(); }
+
+void CSpace::clear()
+{
+    objects.clear();
+}

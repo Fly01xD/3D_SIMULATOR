@@ -9,6 +9,7 @@ public:
     enum axis{ OX, OY, OZ};
     enum relation{ parallel, skew, identical, intersecting, unknown};
     friend class CPlane;
+    friend class CReader;
 
     CLine(axis _ax);
     CLine(CPoint _start, CVector _direction);

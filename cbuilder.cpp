@@ -7,6 +7,9 @@
 CBuilder::CBuilder(CObjectManager* _m) : manager(_m)
 {}
 
+CBuilder::~CBuilder()
+{}
+
 bool CBuilder::buildPlane(std::vector<std::string> &_names)
 {
     size_t s = _names.size();

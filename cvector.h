@@ -18,6 +18,7 @@ public:
 
     State mState;
     friend class CLine;
+    friend class CReader;
     float Determinant(CVector _A, CVector _B, CVector _C) const;
     CVector crossProduct(CVector* _A, CVector* _B) const;
     float dotProduct(CVector* _A, CVector* _B) const;
