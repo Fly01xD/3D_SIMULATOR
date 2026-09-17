@@ -2,6 +2,14 @@
 #include <iostream>
 #include <sstream>
 
+SInode C3D::returnNullInode()
+{
+    SInode inode;
+    inode.type = unknown;
+    console.writeInode(inode);
+    return inode;
+}
+
 C3D::C3D() : space(), manager(&space), console(this), builder(&manager)
 {}
 
@@ -15,24 +23,24 @@ CConsole *C3D::setupConsole(consoleStatus _input, consoleStatus _output)
     return &console;
 }
 
-void C3D::create(objectType _type, std::vector<std::string> &_names)
-{ // trzeba napisać co jeśli bool = false
+void C3D::create(objectType _type, std::vector<std::string> &_arguments)
+{
     switch(_type)
     {
     case plane:
-        if(!builder.buildPlane(_names))
+        if(!builder.buildPlane(_arguments))
             console.failToCreate();
         break;
     case line:
-        if(!builder.buildLine(_names))
+        if(!builder.buildLine(_arguments))
             console.failToCreate();
         break;
     case vector:
-        if(!builder.buildVector(_names))
+        if(!builder.buildVector(_arguments))
             console.failToCreate();
         break;
     case point:
-        if(!builder.buildPoint(_names))
+        if(!builder.buildPoint(_arguments))
             console.failToCreate();
         break;
     default:
@@ -131,10 +139,7 @@ SInode C3D::chosenMod()
     }
     else
     {
-        SInode inode;
-        inode.type = unknown;
-        console.writeInode(inode);
-        return inode;
+        return returnNullInode();
     }
 }
 
@@ -148,10 +153,7 @@ SInode C3D::chosenInfo()
     }
     else
     {
-        SInode inode;
-        inode.type = unknown;
-        console.writeInode(inode);
-        return inode;
+        return returnNullInode();
     }
 }
 
@@ -159,27 +161,30 @@ SInode C3D::chosenCrossProduct(std::string _name)
 {
     if(CSpaceObject* obj = manager.searchObject(_name))
     {
-        if(reader.readyToRead())
-        {
-            if(reader.calculateCrossProduct(obj))
-            {
-                console.writeInode(reader.getInode());
-                return reader.getInode();
-            }
-            else
-                goto FAILURE;
-        }
-        else
-            goto FAILURE;
+        if(!reader.readyToRead())
+            return returnNullInode();
+        if(!reader.readCrossProduct(obj))
+            return returnNullInode();
+        console.writeInode(reader.getInode());
+        return reader.getInode();
     }
     else
+        return returnNullInode();
+}
+
+SInode C3D::chosenDotProduct(std::string _name)
+{
+    if(CSpaceObject* obj = manager.searchObject(_name))
     {
-        FAILURE:
-        SInode inode;
-        inode.type = unknown;
-        console.writeInode(inode);
-        return inode;
+        if(!reader.readyToRead())
+            return returnNullInode();
+        if(!reader.readDotProduct(obj))
+            return returnNullInode();
+        console.writeInode(reader.getInode());
+        return reader.getInode();
     }
+    else
+        return returnNullInode();
 }
 
 void C3D::clearChosen()
@@ -192,9 +197,9 @@ void C3D::saveStash(std::optional<std::string> _name)
     if(reader.getStash())
     {
         if(_name)
-            manager.addObject(*reader.getStash(), &*_name);
+            manager.addObject(*reader.getStash(), *_name);
         else
-            manager.addObject(*reader.getStash(), nullptr);
+            manager.addObject(*reader.getStash(), std::nullopt);
     }
     reader.clearStash();
 }

@@ -18,10 +18,10 @@ public:
     ~CBuilder();
 
     // metody do tworzenia obiektów - true sukces, false porażka
-    bool buildPlane(std::vector<std::string>& _names);
-    bool buildLine(std::vector<std::string>& _names);
-    bool buildVector(std::vector<std::string>& _names);
-    bool buildPoint(std::vector<std::string>& _names);
+    bool buildPlane(std::vector<std::string>& _arguments);
+    bool buildLine(std::vector<std::string>& _arguments);
+    bool buildVector(std::vector<std::string>& _arguments);
+    bool buildPoint(std::vector<std::string>& _arguments);
 };
 
 #endif // CBUILDER_H

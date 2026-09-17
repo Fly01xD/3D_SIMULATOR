@@ -9,7 +9,7 @@ CObjectManager::CObjectManager(CSpace* _s) : space(_s), alert(on), nPlane(0), nL
 CObjectManager::~CObjectManager()
 {}
 
-bool CObjectManager::addObject(CSpaceObject &_obj,const std::string *_name)
+bool CObjectManager::addObject(CSpaceObject &_obj, std::optional<std::string> _name)
 {
     if(_name)
         _obj.changeName(*_name);

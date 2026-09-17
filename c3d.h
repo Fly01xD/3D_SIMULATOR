@@ -15,6 +15,8 @@ private:
     CConsole console;
     CBuilder builder;
     CReader reader;
+
+    SInode returnNullInode();
 public:
     C3D();
     ~C3D();
@@ -30,6 +32,7 @@ public:
     SInode chosenMod();
     SInode chosenInfo();
     SInode chosenCrossProduct(std::string _name);
+    SInode chosenDotProduct(std::string _name);
     void clearChosen();
     void saveStash(std::optional<std::string> _name);
 

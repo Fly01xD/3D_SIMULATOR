@@ -52,26 +52,26 @@ void CConsole::clearSpace()
     app->clearSpace();
 }
 
-void CConsole::create(objectType _type, std::optional<std::string> _name1, std::optional<std::string> _name2, std::optional<std::string> _name3, std::optional<std::string> _name4)
+void CConsole::create(objectType _type, std::optional<std::string> _arg1, std::optional<std::string> _arg2, std::optional<std::string> _arg3, std::optional<std::string> _arg4)
 {
-    std::vector<std::string> names;
-    if(_name1)
+    std::vector<std::string> arguments;
+    if(_arg1)
     {
-        names.push_back(*_name1);
-        if(_name2)
+        arguments.push_back(*_arg1);
+        if(_arg2)
         {
-            names.push_back(*_name2);
-            if(_name3)
+            arguments.push_back(*_arg2);
+            if(_arg3)
             {
-                names.push_back(*_name3);
-                if(_name4)
+                arguments.push_back(*_arg3);
+                if(_arg4)
                 {
-                    names.push_back(*_name4);
+                    arguments.push_back(*_arg4);
                 }
             }
         }
     }
-    app->create(_type, names);
+    app->create(_type, arguments);
 }
 
 void CConsole::list(objectType _type) // trzeba napisać rozkład (numer, typ, nazwa)
@@ -112,6 +112,11 @@ SInode CConsole::chosenInfo()
 SInode CConsole::chosenCrossProduct(std::string _name)
 {
     return app->chosenCrossProduct(_name);
+}
+
+SInode CConsole::chosenDotProduct(std::string _name)
+{
+    return app->chosenDotProduct(_name);
 }
 
 void CConsole::unchoose()

@@ -2,6 +2,7 @@
 #define COBJECTMANAGER_H
 
 #include <string>
+#include <optional>
 class CSpace;
 class CSpaceObject;
 
@@ -27,7 +28,7 @@ public:
     void toggleAlert() {if(alert == on) alert = off;
         else alert = on;}
 
-    bool addObject(CSpaceObject &_obj, const std::string *_name);
+    bool addObject(CSpaceObject &_obj, std::optional<std::string> _name);
     CSpaceObject* searchObject(std::string _name);
     CSpaceObject* objectAt(const size_t _i);
     const size_t spaceSize();

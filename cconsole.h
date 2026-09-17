@@ -33,10 +33,10 @@ public:
     void removeAt(size_t _i);
     void clearSpace();
     void create(objectType _type,
-        std::optional<std::string> _name1 = std::nullopt,
-        std::optional<std::string> _name2 = std::nullopt,
-        std::optional<std::string> _name3 = std::nullopt,
-        std::optional<std::string> _name4 = std::nullopt);
+        std::optional<std::string> _arg1 = std::nullopt,
+        std::optional<std::string> _arg2 = std::nullopt,
+        std::optional<std::string> _arg3 = std::nullopt,
+        std::optional<std::string> _arg4 = std::nullopt);
     void list(objectType _type);
     std::optional<std::string> getNameAt(size_t _i);
     void chooseAt(size_t _i);
@@ -44,6 +44,7 @@ public:
     SInode chosenMod();
     SInode chosenInfo();
     SInode chosenCrossProduct(std::string _name);
+    SInode chosenDotProduct(std::string _name);
     void unchoose();
     void save();
     void save(std::string _name);

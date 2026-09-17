@@ -21,9 +21,7 @@ int main() {
     console->list(all);
     console->chooseAt(1);
     console->chosenMod();
-    console->chosenCrossProduct("line2");
-    console->save("product");
-    console->list(all);
+    console->chosenDotProduct("kupa");
     console->unchoose();
     return 0;
 }

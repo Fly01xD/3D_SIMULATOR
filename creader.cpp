@@ -2,10 +2,15 @@
 #include "cline.h"
 #include "cplane.h"
 
-CReader::CReader() : toRead(nullptr)
+void CReader::clearInode()
 {
     inode.type = unknown;
     inode.values.clear();
+}
+
+CReader::CReader() : toRead(nullptr)
+{
+    clearInode();
 }
 
 CReader::CReader(CSpaceObject *_obj) : toRead(_obj)
@@ -18,8 +23,7 @@ CReader::~CReader()
 
 bool CReader::readObject()
 {
-    inode.type = unknown;
-    inode.values.clear();
+    clearInode();
 
     if(!toRead)
         return false;
@@ -67,8 +71,7 @@ bool CReader::readObject()
 
 bool CReader::readObject(CSpaceObject *_obj)
 {
-    inode.type = unknown;
-    inode.values.clear();
+    clearInode();
 
     if(!_obj)
         return false;
@@ -116,8 +119,7 @@ bool CReader::readObject(CSpaceObject *_obj)
 
 bool CReader::readModulus()
 {
-    inode.type = unknown;
-    inode.values.clear();
+    clearInode();
 
     if(CPoint* p = dynamic_cast<CPoint*>(toRead))
     {
@@ -149,8 +151,58 @@ bool CReader::readModulus()
     }
 }
 
-bool CReader::calculateCrossProduct(CSpaceObject *_obj)
+bool CReader::readDotProduct(CSpaceObject *_obj)
 {
+    clearInode();
+
+    if(!toRead || !_obj)
+        return false;
+    CReader tmpReader(_obj);
+    readObject();
+    if(inode.type == unknown || inode.type == all || inode.type == point)
+        return false;
+    if(tmpReader.inode.type == unknown || tmpReader.inode.type == all || tmpReader.inode.type == point)
+        return false;
+    if(tmpReader.inode.type == inode.type)
+    {
+        if(inode.type == plane)
+        {
+            CPlane* plane1 = dynamic_cast<CPlane*>(toRead);
+            CPlane* plane2 = dynamic_cast<CPlane*>(_obj);
+            static float p = plane1->normalVector.dotProduct(&plane1->normalVector, &plane2->normalVector);
+            clearInode();
+            inode.values.push_back(p);
+            return true;
+        }
+        else if(inode.type == line)
+        {
+            CLine* line1 = dynamic_cast<CLine*>(toRead);
+            CLine* line2 = dynamic_cast<CLine*>(_obj);
+            static float p = line1->directionVector.dotProduct(&line1->directionVector, &line2->directionVector);
+            clearInode();
+            inode.values.push_back(p);
+            return true;
+        }
+        else if(inode.type == vector)
+        {
+            CVector* vector1 = dynamic_cast<CVector*>(toRead);
+            CVector* vector2 = dynamic_cast<CVector*>(_obj);
+            static float p = vector1->dotProduct(vector1, vector2);
+            clearInode();
+            inode.values.push_back(p);
+            return true;
+        }
+        else
+            return false;
+    }
+    else
+        return false;
+}
+
+bool CReader::readCrossProduct(CSpaceObject *_obj)
+{
+    clearInode();
+
     if(!toRead || !_obj)
         return false;
     CReader tmpReader(_obj);

@@ -10,6 +10,8 @@ private:
     CSpaceObject* toRead = nullptr;
     SInode inode;
     CSpaceObject* stash = nullptr;
+
+    void clearInode();
 public:
     CReader();
     CReader(CSpaceObject* _obj);
@@ -21,7 +23,8 @@ public:
     bool readObject();
     bool readObject(CSpaceObject* _obj);
     bool readModulus();
-    bool calculateCrossProduct(CSpaceObject* _obj);
+    bool readCrossProduct(CSpaceObject* _obj);
+    bool readDotProduct(CSpaceObject* _obj);
     bool readyToRead();
     void clear();
     void clearStash();
