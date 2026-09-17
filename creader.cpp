@@ -23,50 +23,7 @@ CReader::~CReader()
 
 bool CReader::readObject()
 {
-    clearInode();
-
-    if(!toRead)
-        return false;
-    else
-    {
-        if(CPlane* p = dynamic_cast<CPlane*>(toRead))
-        {
-            inode.type = plane;
-            inode.values.push_back(p->normalVector.X);
-            inode.values.push_back(p->normalVector.Y);
-            inode.values.push_back(p->normalVector.Z);
-            return true;
-        }
-        else if(CLine* l = dynamic_cast<CLine*>(toRead))
-        {
-            inode.type = line;
-            inode.values.push_back(l->directionVector.X);
-            inode.values.push_back(l->directionVector.Y);
-            inode.values.push_back(l->directionVector.Z);
-            inode.values.push_back(l->startPoint.X);
-            inode.values.push_back(l->startPoint.Y);
-            inode.values.push_back(l->startPoint.Z);
-            return true;
-        }
-        else if(CVector* v = dynamic_cast<CVector*>(toRead))
-        {
-            inode.type = vector;
-            inode.values.push_back(v->X);
-            inode.values.push_back(v->Y);
-            inode.values.push_back(v->Z);
-            return true;
-        }
-        else if(CPoint* p = dynamic_cast<CPoint*>(toRead))
-        {
-            inode.type = point;
-            inode.values.push_back(p->X);
-            inode.values.push_back(p->Y);
-            inode.values.push_back(p->Z);
-            return true;
-        }
-        else
-            return false;
-    }
+    return readObject(toRead);
 }
 
 bool CReader::readObject(CSpaceObject *_obj)
@@ -169,7 +126,7 @@ bool CReader::readDotProduct(CSpaceObject *_obj)
         {
             CPlane* plane1 = dynamic_cast<CPlane*>(toRead);
             CPlane* plane2 = dynamic_cast<CPlane*>(_obj);
-            static float p = plane1->normalVector.dotProduct(&plane1->normalVector, &plane2->normalVector);
+            float p = plane1->normalVector.dotProduct(&plane1->normalVector, &plane2->normalVector);
             clearInode();
             inode.values.push_back(p);
             return true;
@@ -178,7 +135,7 @@ bool CReader::readDotProduct(CSpaceObject *_obj)
         {
             CLine* line1 = dynamic_cast<CLine*>(toRead);
             CLine* line2 = dynamic_cast<CLine*>(_obj);
-            static float p = line1->directionVector.dotProduct(&line1->directionVector, &line2->directionVector);
+            float p = line1->directionVector.dotProduct(&line1->directionVector, &line2->directionVector);
             clearInode();
             inode.values.push_back(p);
             return true;
@@ -187,7 +144,7 @@ bool CReader::readDotProduct(CSpaceObject *_obj)
         {
             CVector* vector1 = dynamic_cast<CVector*>(toRead);
             CVector* vector2 = dynamic_cast<CVector*>(_obj);
-            static float p = vector1->dotProduct(vector1, vector2);
+            float p = vector1->dotProduct(vector1, vector2);
             clearInode();
             inode.values.push_back(p);
             return true;
@@ -217,27 +174,27 @@ bool CReader::readCrossProduct(CSpaceObject *_obj)
         {
             CPlane* plane1 = dynamic_cast<CPlane*>(toRead);
             CPlane* plane2 = dynamic_cast<CPlane*>(_obj);
-            static CVector v = plane1->normalVector.crossProduct(&plane1->normalVector, &plane2->normalVector);
-            readObject(&v);
-            stash = &v;
+            stashVector = plane1->normalVector.crossProduct(&plane1->normalVector, &plane2->normalVector);
+            readObject(&stashVector);
+            stash = &stashVector;
             return true;
         }
         else if(inode.type == line)
         {
             CLine* line1 = dynamic_cast<CLine*>(toRead);
             CLine* line2 = dynamic_cast<CLine*>(_obj);
-            static CVector v = line1->directionVector.crossProduct(&line1->directionVector, &line2->directionVector);
-            readObject(&v);
-            stash = &v;
+            stashVector = line1->directionVector.crossProduct(&line1->directionVector, &line2->directionVector);
+            readObject(&stashVector);
+            stash = &stashVector;
             return true;
         }
         else if(inode.type == vector)
         {
             CVector* vector1 = dynamic_cast<CVector*>(toRead);
             CVector* vector2 = dynamic_cast<CVector*>(_obj);
-            static CVector v = vector1->crossProduct(vector1, vector2);
-            readObject(&v);
-            stash = &v;
+            stashVector = vector1->crossProduct(vector1, vector2);
+            readObject(&stashVector);
+            stash = &stashVector;
             return true;
         }
         else
@@ -255,13 +212,13 @@ bool CReader::readyToRead()
         return true;
 }
 
-void CReader::clear()
-{
-    toRead = nullptr;
-    stash = nullptr;
-}
-
 void CReader::clearStash()
 {
     stash = nullptr;
+}
+
+void CReader::clear()
+{
+    stash = nullptr;
+    toRead = nullptr;
 }

@@ -2,6 +2,7 @@
 #define CREADER_H
 
 #include "SInode.h"
+#include "cvector.h"
 class CSpaceObject;
 
 class CReader
@@ -9,6 +10,7 @@ class CReader
 private:
     CSpaceObject* toRead = nullptr;
     SInode inode;
+    CVector stashVector;
     CSpaceObject* stash = nullptr;
 
     void clearInode();
@@ -26,8 +28,8 @@ public:
     bool readCrossProduct(CSpaceObject* _obj);
     bool readDotProduct(CSpaceObject* _obj);
     bool readyToRead();
-    void clear();
     void clearStash();
+    void clear();
 };
 
 #endif // CREADER_H

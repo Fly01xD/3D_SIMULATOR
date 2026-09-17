@@ -67,12 +67,17 @@ void C3D::remove(std::vector<std::string> &_names)
 
 void C3D::removeAt(size_t _i)
 {
-    std::stringstream name;
-    name << "index " << _i;
-    if(manager.removeObject(*manager.objectAt(_i)))
-        console.removedSuccesfully(name.str());
+    if(CSpaceObject* tmp = manager.objectAt(_i))
+    {
+        std::stringstream name;
+        name << "index " << _i;
+        if(manager.removeObject(*manager.objectAt(_i)))
+            console.removedSuccesfully(name.str());
+        else
+            console.failToRemove(name.str());
+    }
     else
-        console.failToRemove(name.str());
+        console.failToFind();
 }
 
 void C3D::clearSpace()
@@ -118,12 +123,13 @@ void C3D::choose(std::string _name)
 {
     if(CSpaceObject* ptr = manager.searchObject(_name))
         reader.changeObject(ptr);
+    else
+        console.failToFind();
 }
 
 void C3D::chooseAt(size_t _i)
 {
-    CSpaceObject* tmp = manager.objectAt(_i);
-    if(tmp)
+    if(CSpaceObject* tmp = manager.objectAt(_i))
         reader.changeObject(tmp);
     else
         console.failToFind();
@@ -192,7 +198,7 @@ void C3D::clearChosen()
     reader.changeObject(nullptr);
 }
 
-void C3D::saveStash(std::optional<std::string> _name)
+void C3D::saveStash(std::optional<std::string> _name) // problem z rzutowaniem w dół
 {
     if(reader.getStash())
     {

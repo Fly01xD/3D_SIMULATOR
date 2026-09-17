@@ -167,7 +167,7 @@ bool CBuilder::buildLine(std::vector<std::string> &_arguments)
             newObject = CLine(CLine::OZ);
         else
             return false;
-        return manager->addObject(newObject, nullptr);
+        return manager->addObject(newObject, std::nullopt);
     }
     default:
         return false;
@@ -211,7 +211,7 @@ bool CBuilder::buildVector(std::vector<std::string> &_arguments)
                     return false;
             }
             CVector newObject(a[0], a[1], a[2]);
-            return manager->addObject(newObject, nullptr);
+            return manager->addObject(newObject, std::nullopt);
         }
     }
     case 2: { // dwa punkty bez nazwy
@@ -223,7 +223,7 @@ bool CBuilder::buildVector(std::vector<std::string> &_arguments)
                 return false;
         }
         CVector newObject(a[0], a[1]);
-        return manager->addObject(newObject, nullptr);
+        return manager->addObject(newObject, std::nullopt);
     }
     default:
         return false;
